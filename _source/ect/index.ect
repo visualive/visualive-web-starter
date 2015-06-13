@@ -1,0 +1,19 @@
+<% extend 'layout/_default.ect' %>
+
+<% block 'title' : %><%= @siteName %><% end %>
+<% block 'metas' : %>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta property="og:type" content="Website">
+<meta property="og:site_name" content="">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:url" content="">
+<meta property="og:image" content="">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="">
+<% end %>
+
+<h1><%= @siteName %></h1>
+
+<% include 'inc/_slider.ect' %>

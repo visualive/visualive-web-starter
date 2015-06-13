@@ -1,0 +1,13 @@
+{
+  "siteName": "VisuAlive Web Starter",
+  "siteURL": "http://localhost:3000/",
+  "slider": {
+    "home": [
+      "http://dummyimage.com/532x272/aaaaaa/ffffff.png",
+      "http://dummyimage.com/532x272/bbbbbb/ffffff.png",
+      "http://dummyimage.com/532x272/cccccc/ffffff.png",
+      "http://dummyimage.com/532x272/dddddd/ffffff.png",
+      "http://dummyimage.com/532x272/eeeeee/ffffff.png"
+    ]
+  }
+}
