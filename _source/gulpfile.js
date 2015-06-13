@@ -11,46 +11,49 @@
 
 var gulp        = require('gulp'),
 	$           = require('gulp-load-plugins')(),
-	pngcrush    = require("imagemin-pngcrush"),
+	jpegoptim   = require('imagemin-jpegoptim'),
+	pngquant    = require('imagemin-pngquant'),
+	optipng     = require('imagemin-optipng'),
+	svgo        = require('imagemin-svgo'),
 	browserSync = require('browser-sync'),
 	reload      = browserSync.reload,
 	runSequence = require('run-sequence'),
 	fs          = require('fs'),
 	rootPath    = __dirname.replace("/_source", ""),
 	sources     = {
-		html:         rootPath + '/**/*.html',
-		php:          rootPath + '/**/*.php',
-		ect:          ['ect/**/*.ect', '!' + 'ect/**/_*.ect'],
-		scss:         'scss/**/*.scss',
-		scssDir:      'scss/',
-		css:          ['css/**/*.css', '!css/**/*.min.css'],
-		cssDir:       'css/',
-		cssDestDir:   '../assets/css/',
-		img:          'img/**/*.+(jpg|jpeg|png|gif|svg)',
-		imgDestDir:   '../assets/img/',
-		font:         'font/**/*',
-		fontDestDir:  '../assets/font/',
-		js:           ['js/**/*.js', '!js/**/*.min.js'],
-		jsCopy:       'js/**/*.js',
-		jsSrcDir:     'js/',
-		jsDestDir:    '../assets/js/',
-		jsLib:        [
-            'bower_components/fastclick/lib/fastclick.js',
-            'bower_components/modernizr/modernizr.js',
-            // 'bower_components/foundation/js/foundation/foundation.js',
-            'bower_components/shufflejs/dist/jquery.shuffle.min.js',
-            'bower_components/slick-carousel/slick/slick.min.js',
+		html:            rootPath + '/**/*.html',
+		php:             rootPath + '/**/*.php',
+		ect:             ['ect/**/*.ect', '!ect/**/_*.ect'],
+		scss:            ['scss/**/*.scss', '!scss/_temp/**/*.scss'],
+		scssDir:         'scss/',
+		css:             ['css/**/*.css', '!css/**/*.min.css'],
+		cssDir:          'css/',
+		cssDestDir:      '../assets/css/',
+		img:             'img/**/*.+(jpg|jpeg|png|gif|svg)',
+		imgDestDir:      '../assets/img/',
+		font:            ['font/**/*', '!font/icon/**/*'],
+		js:              ['js/**/*.js', '!js/**/*.min.js'],
+		jsCopy:          'js/**/*.js',
+		jsSrcDir:        'js/',
+		jsDestDir:       '../assets/js/',
+		jsLib:           [
+			'bower_components/fastclick/lib/fastclick.js',
+			'bower_components/modernizr/modernizr.js',
+			// 'bower_components/foundation/js/foundation/foundation.js',
+			'bower_components/shufflejs/dist/jquery.shuffle.min.js',
+			'bower_components/slick-carousel/slick/slick.min.js',
 			'bower_components/jQuery.mmenu/dist/js/jquery.mmenu.min.js',
-            'js/jquery.heightLine.min.js',
+			'js/jquery.heightLine.min.js',
 		],
-        jsIE:         [
-            'bower_components/html5shiv/dist/html5shiv.min.js',
-            'bower_components/nwmatcher/src/nwmatcher.js',
-            'bower_components/selectivizr/selectivizr.js',
-            'bower_components/respond/dest/respond.min.js',
-            'bower_components/REM-unit-polyfill/js/rem.min.js'
-        ]
-	};
+		jsIE:            [
+			'bower_components/html5shiv/dist/html5shiv.min.js',
+			'bower_components/nwmatcher/src/nwmatcher.js',
+			'bower_components/selectivizr/selectivizr.js',
+			'bower_components/respond/dest/respond.min.js',
+			'bower_components/REM-unit-polyfill/js/rem.min.js'
+		]
+	},
+	iconFontName = 'VisuAliveWebStarterIcon';
 
 /*************************
  ******  HTML build ******
@@ -118,12 +121,12 @@ gulp.task('scss', function(){
  ******  JS optimaize  ******
  ****************************/
 gulp.task('js', function(){
-    return gulp.src(sources.js)
-        .pipe($.plumber())
-        .pipe($.rename({suffix: '.min'}))
-        .pipe($.uglify({preserveComments: 'some'}))
-        .pipe(gulp.dest(sources.jsDestDir))
-        .pipe(reload({stream: true, once: true}));
+	return gulp.src(sources.js)
+		.pipe($.plumber())
+		.pipe($.rename({suffix: '.min'}))
+		.pipe($.uglify({preserveComments: 'some'}))
+		.pipe(gulp.dest(sources.jsDestDir))
+		.pipe(reload({stream: true, once: true}));
 });
 gulp.task('jsLib', function(){
 	return gulp.src(sources.jsLib)
@@ -136,14 +139,14 @@ gulp.task('jsLib', function(){
 		.pipe(reload({stream: true, once: true}));
 });
 gulp.task('jsIE', function(){
-    return gulp.src(sources.jsIE)
-        .pipe($.plumber())
-        .pipe($.concat('ie.js'))
-        .pipe(gulp.dest(sources.jsSrcDir))
-        .pipe($.rename({suffix: '.min'}))
-        .pipe($.uglify({preserveComments: 'some'}))
-        .pipe(gulp.dest(sources.jsDestDir))
-        .pipe(reload({stream: true, once: true}));
+	return gulp.src(sources.jsIE)
+		.pipe($.plumber())
+		.pipe($.concat('ie.js'))
+		.pipe(gulp.dest(sources.jsSrcDir))
+		.pipe($.rename({suffix: '.min'}))
+		.pipe($.uglify({preserveComments: 'some'}))
+		.pipe(gulp.dest(sources.jsDestDir))
+		.pipe(reload({stream: true, once: true}));
 });
 gulp.task('jsCopy', function(){
 	return gulp.src(sources.jsCopy)
@@ -158,11 +161,12 @@ gulp.task("img", function(){
 	return gulp.src(sources.img)
 		.pipe($.plumber())
 		.pipe($.cache($.imagemin({
-			optimizationLevel: 7,
-			progressive: true,
-			interlaced: true,
-			svgoPlugins: [{removeViewBox: false}],
-			use: [pngcrush()]
+			use: [
+				optipng({optimizationLevel: 3}),
+				pngquant({quality: '65-80', speed: 4}),
+				jpegoptim({max: 70}),
+				svgo()
+			]
 		})))
 		.pipe(gulp.dest(sources.imgDestDir))
 		.pipe(reload({stream: true, once: true}));
@@ -172,11 +176,12 @@ gulp.task("imgBuild", function(){
 	return gulp.src(sources.img)
 		.pipe($.plumber())
 		.pipe($.imagemin({
-			optimizationLevel: 7,
-			progressive: true,
-			interlaced: true,
-			svgoPlugins: [{removeViewBox: false}],
-			use: [pngcrush()]
+			use: [
+				optipng({optimizationLevel: 3}),
+				pngquant({quality: '65-80', speed: 4}),
+				jpegoptim({max: 70}),
+				svgo()
+			]
 		}))
 		.pipe(gulp.dest(sources.imgDestDir))
 		.pipe(reload({stream: true, once: true}));
@@ -223,7 +228,7 @@ gulp.task('clean', $.shell.task(
 		'rm -rf ' + rootPath + '/assets/css/*',
 		'rm -rf ' + rootPath + '/assets/js/*',
 		'rm -rf ' + rootPath + '/assets/img/*',
-        'rm -rf ' + rootPath + '/assets/font/*'
+		'rm -rf ' + rootPath + '/assets/font/*'
 	]
 ));
 
@@ -233,8 +238,8 @@ gulp.task('clean', $.shell.task(
 gulp.task('delete', $.shell.task(
 	[
 		'rm -rf ' + rootPath + '/*.ect',
-        'rm -rf ' + rootPath + '/**/*/.gitkeep',
-        'rm -rf ' + rootPath + '/_source/.sass-cache/'
+		'rm -rf ' + rootPath + '/**/*/.gitkeep',
+		'rm -rf ' + rootPath + '/_source/.sass-cache/'
 	]
 ));
 
