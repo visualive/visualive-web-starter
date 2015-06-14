@@ -35,7 +35,7 @@ ECT ファイルのセッティングは `_source/settings.ect.json` 、画像�
 **settings.pngSpeed :** PNG 画像の圧縮処理の実行速度を 1 〜 10 の間で設定。値が高くなるほど速度重視。default : 5  
 **settings.jpgQuality :** JPEG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視。default : 70  
 **settings.jpgProgressive :** プログレッシブ JPEG にするかの設定。default : true  
-**settings.gifInterlaced :** プログレッシブレンタリングの為のインターレース GIF の設定。default : false
+**settings.gifInterlaced :** プログレッシブレンタリングの為のインターレース GIF の設定。default : false  
 **adds :** サムネイル画像を生成したい画像のファイルパスを配列で指定。
 
 ## Directory Structure
