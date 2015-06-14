@@ -11,6 +11,7 @@
 
 var gulp        = require('gulp'),
 	$           = require('gulp-load-plugins')(),
+	imageresize = require('gulp-image-resize'),
 	jpegoptim   = require('imagemin-jpegoptim'),
 	pngquant    = require('imagemin-pngquant'),
 	optipng     = require('imagemin-optipng'),
@@ -21,22 +22,27 @@ var gulp        = require('gulp'),
 	fs          = require('fs'),
 	rootPath    = __dirname.replace("/_source", ""),
 	sources     = {
-		html:            rootPath + '/**/*.html',
-		php:             rootPath + '/**/*.php',
-		ect:             ['ect/**/*.ect', '!ect/**/_*.ect'],
-		scss:            ['scss/**/*.scss', '!scss/_temp/**/*.scss'],
-		scssDir:         'scss/',
-		css:             ['css/**/*.css', '!css/**/*.min.css'],
-		cssDir:          'css/',
-		cssDestDir:      '../assets/css/',
-		img:             'img/**/*.+(jpg|jpeg|png|gif|svg)',
-		imgDestDir:      '../assets/img/',
-		font:            ['font/**/*', '!font/icon/**/*'],
-		js:              ['js/**/*.js', '!js/**/*.min.js'],
-		jsCopy:          'js/**/*.js',
-		jsSrcDir:        'js/',
-		jsDestDir:       '../assets/js/',
-		jsLib:           [
+		settings:    {
+			ect:   "settings.ect.json",
+			thumb: "settings.thumb.json"
+		},
+		html:        rootPath + '/**/*.html',
+		php:         rootPath + '/**/*.php',
+		ect:         ['ect/**/*.ect', '!ect/**/_*.ect'],
+		scss:        ['scss/**/*.scss', '!scss/_temp/**/*.scss'],
+		scssDir:     'scss/',
+		css:         ['css/**/*.css', '!css/**/*.min.css'],
+		cssDir:      'css/',
+		cssDestDir:  '../assets/css/',
+		img:         'img/**/*.+(jpg|jpeg|png|gif|svg)',
+		imgDestDir:  '../assets/img/',
+		font:        'font/**/*',
+		fontDestDir: '../assets/font/',
+		js:          ['js/**/*.js', '!js/**/*.min.js'],
+		jsCopy:      'js/**/*.js',
+		jsSrcDir:    'js/',
+		jsDestDir:   '../assets/js/',
+		jsLib:       [
 			'bower_components/fastclick/lib/fastclick.js',
 			'bower_components/modernizr/modernizr.js',
 			// 'bower_components/foundation/js/foundation/foundation.js',
@@ -45,7 +51,7 @@ var gulp        = require('gulp'),
 			'bower_components/jQuery.mmenu/dist/js/jquery.mmenu.min.js',
 			'js/jquery.heightLine.min.js',
 		],
-		jsIE:            [
+		jsIE:        [
 			'bower_components/html5shiv/dist/html5shiv.min.js',
 			'bower_components/nwmatcher/src/nwmatcher.js',
 			'bower_components/selectivizr/selectivizr.js',
@@ -59,7 +65,7 @@ var gulp        = require('gulp'),
  ******  HTML build ******
  *************************/
 gulp.task("ect", function(){
-	var json = JSON.parse(fs.readFileSync("ect.json"));
+	var json = JSON.parse(fs.readFileSync(sources.settings.ect));
 
 	return gulp.src(sources.ect)
 		.pipe($.plumber())
@@ -158,33 +164,81 @@ gulp.task('jsCopy', function(){
  ******  IMG optimaize ******
  ****************************/
 gulp.task("img", function(){
+	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+
 	return gulp.src(sources.img)
 		.pipe($.plumber())
 		.pipe($.cache($.imagemin({
 			use: [
-				optipng({optimizationLevel: 3}),
-				pngquant({quality: '65-80', speed: 4}),
-				jpegoptim({max: 70}),
+				optipng({optimizationLevel: json.settings.optimizationLevel}),
+				pngquant({quality: json.quality, speed: json.settings.speed}),
+				jpegoptim({max: json.settings.jpegoptimMax}),
 				svgo()
 			]
 		})))
 		.pipe(gulp.dest(sources.imgDestDir))
-		.pipe(reload({stream: true, once: true}));
+		.pipe(reload({stream: true}));
+});
+gulp.task("imgThumb", function(){
+	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+
+	return gulp.src(json.imgs)
+		.pipe($.plumber())
+		.pipe(imageresize({
+			width: 300,
+			height: 200,
+			crop: false,
+			imageMagick : true
+		}))
+		.pipe($.rename({suffix: '-300x200'}))
+		.pipe($.cache($.imagemin({
+			use: [
+				optipng({optimizationLevel: json.settings.optimizationLevel}),
+				pngquant({quality: json.quality, speed: json.settings.speed}),
+				jpegoptim({max: json.settings.jpegoptimMax}),
+				svgo()
+			]
+		})))
+		.pipe(gulp.dest(sources.imgDestDir))
+		.pipe(reload({stream: true}));
 });
 // Not cache.
 gulp.task("imgBuild", function(){
+	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+
 	return gulp.src(sources.img)
 		.pipe($.plumber())
 		.pipe($.imagemin({
 			use: [
-				optipng({optimizationLevel: 3}),
-				pngquant({quality: '65-80', speed: 4}),
-				jpegoptim({max: 70}),
+				optipng({optimizationLevel: json.settings.optimizationLevel}),
+				pngquant({quality: json.quality, speed: json.settings.speed}),
+				jpegoptim({max: json.settings.jpegoptimMax}),
 				svgo()
 			]
 		}))
-		.pipe(gulp.dest(sources.imgDestDir))
-		.pipe(reload({stream: true, once: true}));
+		.pipe(gulp.dest(sources.imgDestDir));
+});
+gulp.task("imgThumbBuild", function(){
+	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+
+	return gulp.src(json.imgs)
+		.pipe($.plumber())
+		.pipe(imageresize({
+			width: 300,
+			height: 200,
+			crop: false,
+			imageMagick : true
+		}))
+		.pipe($.rename({suffix: '-300x200'}))
+		.pipe($.imagemin({
+			use: [
+				optipng({optimizationLevel: json.settings.optimizationLevel}),
+				pngquant({quality: json.quality, speed: json.settings.speed}),
+				jpegoptim({max: json.settings.jpegoptimMax}),
+				svgo()
+			]
+		}))
+		.pipe(gulp.dest(sources.imgDestDir));
 });
 
 /*******************
@@ -247,17 +301,18 @@ gulp.task('delete', $.shell.task(
  ******  Build  ******
  *********************/
 gulp.task('build', function(){
-	return runSequence('clear', 'clean', ['ect', 'scss', 'js', 'jsLib', 'jsIE', 'imgBuild', 'font'], 'jsCopy', 'clear', 'delete' );
+	return runSequence('clear', 'clean', ['ect', 'scss', 'js', 'jsLib', 'jsIE', 'imgBuild', 'imgThumbBuild', 'font'], 'jsCopy', 'delete', 'clear' );
 });
 
 /*********************
  ******  Watch  ******
  *********************/
 gulp.task('watch', function(){
-	gulp.watch(['ect/**/*.ect','ect.json'], ['ect']);
+	gulp.watch(['ect/**/*.ect', sources.settings.ect], ['ect']);
 	gulp.watch(sources.scss, ['scss']);
 	gulp.watch(sources.js, ['js']);
 	gulp.watch(sources.img, ['img']);
+	gulp.watch([sources.img, sources.settings.thumb], ['imgThumb']);
 	gulp.watch(sources.font, ['font']);
 	gulp.watch(sources.html, ['browserSyncReload']);
 	gulp.watch(sources.php, ['browserSyncReload']);
@@ -267,5 +322,5 @@ gulp.task('watch', function(){
  ******  Default task  ******
  ****************************/
 gulp.task('default', function(){
-	return runSequence('clear', 'clean', ['ect', 'scss', 'js', 'jsLib', 'jsIE', 'imgBuild', 'font'], 'jsCopy', 'browserSync', 'watch');
+	return runSequence('clear', 'clean', ['ect', 'scss', 'js', 'jsLib', 'jsIE', 'imgBuild', 'imgThumbBuild', 'font'], 'jsCopy', 'browserSync', 'watch');
 });
