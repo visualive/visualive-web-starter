@@ -1,4 +1,4 @@
-VisuAlive Web Starter v1.1.0
+VisuAlive Web Starter v1.2.1
 =============================
 
 VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。  
