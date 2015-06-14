@@ -25,18 +25,27 @@ $ gulp
 ECT ファイルのセッティングは `_source/settings.ect.json` 、画像サムネイルの自動生成並びに画像の圧縮レベルの設定は `_source/settings.img.json` で設定します。
 
 ### settings.ect.json
-**ssiteName :** サイト名。default : VisuAlive Web Starter  
-**siteURL :** モックアップ上のサイトURL。default : "http://localhost:3000/"  
+**ssiteName :**  
+サイト名。default : VisuAlive Web Starter  
+**siteURL :**  
+モックアップ上のサイトURL。default : "http://localhost:3000/"  
 ※ 初期設定では BrowserSync のポート番号に合わせています。  
-**slider :** この項目は不要。サンプルスライダーを組み込むために使用。
+**slider :**  
+この項目は不要。サンプルスライダーを組み込むために使用。
 
 ### settings.img.json
-**settings.pngQuality :** PNG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視。default : "60-80"  
-**settings.pngSpeed :** PNG 画像の圧縮処理の実行速度を 1 〜 10 の間で設定。値が高くなるほど速度重視。default : 5  
-**settings.jpgQuality :** JPEG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視。default : 70  
-**settings.jpgProgressive :** プログレッシブ JPEG にするかの設定。default : true  
-**settings.gifInterlaced :** プログレッシブレンタリングの為のインターレース GIF の設定。default : false  
-**adds :** サムネイル画像を生成したい画像のファイルパスを配列で指定。
+**settings.pngQuality :**  
+PNG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視。default : "60-80"  
+**settings.pngSpeed :**  
+PNG 画像の圧縮処理の実行速度を 1 〜 10 の間で設定。値が高くなるほど速度重視。default : 5  
+**settings.jpgQuality :**  
+JPEG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視。default : 70  
+**settings.jpgProgressive :**  
+プログレッシブ JPEG にするかの設定。default : true  
+**settings.gifInterlaced :**  
+プログレッシブレンタリングの為のインターレース GIF の設定。default : false  
+**adds :**  
+サムネイル画像を生成したい画像のファイルパスを配列で指定。
 
 ## Directory Structure
 
