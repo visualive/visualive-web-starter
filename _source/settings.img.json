@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "pngQuality": "60-70",
+    "pngSpeed": 5,
+    "jpgQuality": 70,
+    "jpgProgressive": true,
+    "gifInterlaced": false
+  },
+  "adds": [
+    "img/girl.*",
+    "img/girl2.*"
+  ]
+}

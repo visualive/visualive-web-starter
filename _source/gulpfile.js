@@ -12,9 +12,9 @@
 var gulp        = require('gulp'),
 	$           = require('gulp-load-plugins')(),
 	imageresize = require('gulp-image-resize'),
-	jpegoptim   = require('imagemin-jpegoptim'),
 	pngquant    = require('imagemin-pngquant'),
-	optipng     = require('imagemin-optipng'),
+	jpegoptim   = require('imagemin-jpegoptim'),
+	gifsicle    = require('imagemin-gifsicle'),
 	svgo        = require('imagemin-svgo'),
 	browserSync = require('browser-sync'),
 	reload      = browserSync.reload,
@@ -23,8 +23,8 @@ var gulp        = require('gulp'),
 	rootPath    = __dirname.replace("/_source", ""),
 	sources     = {
 		settings:    {
-			ect:   "settings.ect.json",
-			thumb: "settings.thumb.json"
+			ect: "settings.ect.json",
+			img: "settings.img.json"
 		},
 		html:        rootPath + '/**/*.html',
 		php:         rootPath + '/**/*.php',
@@ -164,15 +164,23 @@ gulp.task('jsCopy', function(){
  ******  IMG optimaize ******
  ****************************/
 gulp.task("img", function(){
-	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+	var img = JSON.parse(fs.readFileSync(sources.settings.img));
 
 	return gulp.src(sources.img)
 		.pipe($.plumber())
 		.pipe($.cache($.imagemin({
 			use: [
-				optipng({optimizationLevel: json.settings.optimizationLevel}),
-				pngquant({quality: json.quality, speed: json.settings.speed}),
-				jpegoptim({max: json.settings.jpegoptimMax}),
+				pngquant({
+					quality: img.settings.pngQuality,
+					speed: img.settings.pngSpeed
+				}),
+				jpegoptim({
+					max: img.settings.jpgQuality,
+					progressive: img.settings.jpgProgressive,
+				}),
+				gifsicle({
+					interlaced: img.settings.gifInterlaced,
+				}),
 				svgo()
 			]
 		})))
@@ -180,9 +188,9 @@ gulp.task("img", function(){
 		.pipe(reload({stream: true}));
 });
 gulp.task("imgThumb", function(){
-	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+	var img = JSON.parse(fs.readFileSync(sources.settings.img));
 
-	return gulp.src(json.imgs)
+	return gulp.src(img.adds)
 		.pipe($.plumber())
 		.pipe(imageresize({
 			width: 300,
@@ -193,9 +201,17 @@ gulp.task("imgThumb", function(){
 		.pipe($.rename({suffix: '-300x200'}))
 		.pipe($.cache($.imagemin({
 			use: [
-				optipng({optimizationLevel: json.settings.optimizationLevel}),
-				pngquant({quality: json.quality, speed: json.settings.speed}),
-				jpegoptim({max: json.settings.jpegoptimMax}),
+				pngquant({
+					quality: img.settings.pngQuality,
+					speed: img.settings.pngSpeed
+				}),
+				jpegoptim({
+					max: img.settings.jpgQuality,
+					progressive: img.settings.jpgProgressive,
+				}),
+				gifsicle({
+					interlaced: img.settings.gifInterlaced,
+				}),
 				svgo()
 			]
 		})))
@@ -204,24 +220,32 @@ gulp.task("imgThumb", function(){
 });
 // Not cache.
 gulp.task("imgBuild", function(){
-	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+	var img = JSON.parse(fs.readFileSync(sources.settings.img));
 
 	return gulp.src(sources.img)
 		.pipe($.plumber())
 		.pipe($.imagemin({
 			use: [
-				optipng({optimizationLevel: json.settings.optimizationLevel}),
-				pngquant({quality: json.quality, speed: json.settings.speed}),
-				jpegoptim({max: json.settings.jpegoptimMax}),
+				pngquant({
+					quality: img.settings.pngQuality,
+					speed: img.settings.pngSpeed
+				}),
+				jpegoptim({
+					max: img.settings.jpgQuality,
+					progressive: img.settings.jpgProgressive,
+				}),
+				gifsicle({
+					interlaced: img.settings.gifInterlaced,
+				}),
 				svgo()
 			]
 		}))
 		.pipe(gulp.dest(sources.imgDestDir));
 });
 gulp.task("imgThumbBuild", function(){
-	var json = JSON.parse(fs.readFileSync(sources.settings.thumb));
+	var img = JSON.parse(fs.readFileSync(sources.settings.img));
 
-	return gulp.src(json.imgs)
+	return gulp.src(img.adds)
 		.pipe($.plumber())
 		.pipe(imageresize({
 			width: 300,
@@ -232,9 +256,17 @@ gulp.task("imgThumbBuild", function(){
 		.pipe($.rename({suffix: '-300x200'}))
 		.pipe($.imagemin({
 			use: [
-				optipng({optimizationLevel: json.settings.optimizationLevel}),
-				pngquant({quality: json.quality, speed: json.settings.speed}),
-				jpegoptim({max: json.settings.jpegoptimMax}),
+				pngquant({
+					quality: img.settings.pngQuality,
+					speed: img.settings.pngSpeed
+				}),
+				jpegoptim({
+					max: img.settings.jpgQuality,
+					progressive: img.settings.jpgProgressive,
+				}),
+				gifsicle({
+					interlaced: img.settings.gifInterlaced,
+				}),
 				svgo()
 			]
 		}))
@@ -312,7 +344,7 @@ gulp.task('watch', function(){
 	gulp.watch(sources.scss, ['scss']);
 	gulp.watch(sources.js, ['js']);
 	gulp.watch(sources.img, ['img']);
-	gulp.watch([sources.img, sources.settings.thumb], ['imgThumb']);
+	gulp.watch([sources.img, sources.settings.img], ['imgThumb']);
 	gulp.watch(sources.font, ['font']);
 	gulp.watch(sources.html, ['browserSyncReload']);
 	gulp.watch(sources.php, ['browserSyncReload']);
