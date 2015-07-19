@@ -1,4 +1,4 @@
-VisuAlive Web Starter v1.2.1
+VisuAlive Web Starter v1.2.2
 =============================
 
 VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。  
@@ -109,6 +109,8 @@ Dual licensed under the MIT License or GNU General Public License v2.0 ( or late
 * もっと効率よく高速に処理できるように Gulpfile の改修を行う。( Pull Request 歓迎 ! ! ）
 
 ## Changelog
+* 2015/07/20  
+v1.2.2 - Update bower.json & package.json
 * 2015/06/14  
 v1.2.1 - 画像の圧縮方法の変更、サムネイル画像の自動生成タスクを追加。
 * 2015/06/14  

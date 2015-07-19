@@ -45,11 +45,13 @@ var gulp        = require('gulp'),
 		jsLib:       [
 			'bower_components/fastclick/lib/fastclick.js',
 			'bower_components/modernizr/modernizr.js',
-			// 'bower_components/foundation/js/foundation/foundation.js',
-			'bower_components/shufflejs/dist/jquery.shuffle.min.js',
+			//'bower_components/foundation/js/foundation/foundation.js',
+			// 'bower_components/jQuery.mmenu/dist/js/jquery.mmenu.min.js',
+			//'bower_components/shufflejs/dist/jquery.shuffle.min.js',
 			'bower_components/slick-carousel/slick/slick.min.js',
-			'bower_components/jQuery.mmenu/dist/js/jquery.mmenu.min.js',
-			'js/jquery.heightLine.min.js',
+			// 'bower_components/jquery.stellar/jquery.stellar.min.js',
+			// 'bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.min.js'
+			//'js/jquery.heightLine.min.js'
 		],
 		jsIE:        [
 			'bower_components/html5shiv/dist/html5shiv.min.js',
@@ -58,8 +60,7 @@ var gulp        = require('gulp'),
 			'bower_components/respond/dest/respond.min.js',
 			'bower_components/REM-unit-polyfill/js/rem.min.js'
 		]
-	},
-	iconFontName = 'VisuAliveWebStarterIcon';
+	};
 
 /*************************
  ******  HTML build ******
@@ -98,7 +99,7 @@ gulp.task('scss', function(){
 			sass:         sources.scssDir
 		}))
 		.pipe($.pleeease({
-			autoprefixer: {browsers: ['last 4 versions']},
+			autoprefixer: {browsers: ['last 2 versions', 'ie 8', 'ie 9']},
 			opacity: true,
 			filters: { 'oldIE': true },
 			rem: ["16px", {replace: true}],
@@ -116,7 +117,7 @@ gulp.task('scss', function(){
 			extname: '.css'
 		}))
 		.pipe($.pleeease({
-			autoprefixer: false,
+			autoprefixer: {browsers: ['last 2 versions', 'ie 8', 'ie 9']},
 			minifier: true
 		}))
 		.pipe(gulp.dest(sources.cssDestDir))
