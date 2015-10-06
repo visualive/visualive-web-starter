@@ -122,7 +122,7 @@ Dual licensed under the MIT License or GNU General Public License v2.0 ( or late
 ## Changelog
 
 * 2015/10/06  
-v1.3.4 - Zip 圧縮タスクの追加。
+v1.4.0 - Zip 圧縮タスクの追加。
 * 2015/10/06  
 v1.3.0 - Gulpfile、ディレクトリ構造の変更。
 * 2015/07/20  
