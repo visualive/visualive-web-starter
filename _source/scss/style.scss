@@ -1,8 +1,12 @@
 @import "functions";
 @import "settings";
 @import "normalize";
-@import "components/visibility";
-@import "components/grid";
-@import "components/block-grid";
+@import "foundation/components/visibility";
+@import "foundation/components/grid";
+@import "foundation/components/block-grid";
 @import "slick";
 @import "slick-theme";
+
+body {
+    background-color: #000;
+}

@@ -1,6 +1,6 @@
 {
   "siteName": "VisuAlive Web Starter",
-  "siteURL": "http://localhost:3000/",
+  "siteURL": "/",
   "slider": {
     "home": [
       "http://dummyimage.com/532x272/aaaaaa/ffffff.png",
