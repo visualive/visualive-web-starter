@@ -1,13 +1,11 @@
 VisuAlive Web Starter v1.3.0
 =============================
 
-VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。  
-CSS フレームワークに ZURB 社の Foundation を採用しています。
+VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。CSS フレームワークに ZURB 社の Foundation を採用しています。
 
 ## Use of programming language and build tool
 
-VisuAlive Web Starter は CSS プリプロセッサの Sass、タスクランナーに Gulp を採用しています。  
-予め Ruby、Sass、Compass、Node.js、ImageMagic、Gulp、Bower をインストールしておいてください。  
+VisuAlive Web Starter は CSS プリプロセッサの Sass、タスクランナーに Gulp を採用しています。予め Ruby、Sass、Compass、Node.js、ImageMagic、Gulp、Bower をインストールしておいてください。  
 
 > 参考サイト : [Mac OSX での開発環境構築](http://designinglabo.com/1019/mac-os-x-web-development-environment.html)
 
