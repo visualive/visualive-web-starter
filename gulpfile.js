@@ -293,5 +293,5 @@ gulp.task('build', function(){
  ****************************/
 gulp.task('default', function(){
     runSequence('clear');
-	return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'font'], 'css', 'browserSync', 'watch');
+	return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'font'], 'css', 'delete', 'browserSync', 'watch');
 });
