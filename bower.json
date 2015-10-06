@@ -5,7 +5,7 @@
   "license": "MIT License",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kuck1u/vavg.git"
+    "url": "https://github.com/kuck1u/visualive-web-starter.git"
   },
   "devDependencies": {
     "foundation": "zurb/bower-foundation",

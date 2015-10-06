@@ -30,8 +30,7 @@ var gulp            = require('gulp'),
             "pngQuality"    : "60-70",
             "pngSpeed"      : 5,
             "jpgQuality"    : 70,
-            "jpgProgressive": true,
-            "gifInterlaced" : true
+            "jpgProgressive": true
         }
     },
     sources         = {
@@ -42,7 +41,8 @@ var gulp            = require('gulp'),
         scssDir: sourcePath + '/scss/',
         css    : [assetsPath + '/css/**/*.css', '!' + assetsPath + '/css/**/*.min.css'],
         cssDir : assetsPath + '/css/',
-        img    : sourcePath + '/img/**/*',
+        img    : sourcePath + '/img/**/*.{jpg,jpeg,png,svg}',
+        imgGif : sourcePath + '/img/**/*.gif',
         imgDir : assetsPath + '/img/',
         font   : sourcePath + '/font/**/*',
         fontDir: assetsPath + '/font/',
@@ -143,7 +143,7 @@ gulp.task('scss', function () {
 gulp.task('css', function () {
     return gulp.src(sources.css)
         .pipe($.csscomb())
-        .pipe(gulp.dest(sources.cssDir))
+        //.pipe(gulp.dest(sources.cssDir))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.cssmin())
         .pipe(gulp.dest(sources.cssDir))
@@ -160,6 +160,7 @@ gulp.task('js', function () {
         }))
         .pipe($.concat('apps.js'))
         .pipe(crLf({changeCode: 'LF'}))
+        //.pipe(gulp.dest(sources.jsDir))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.uglify({preserveComments: 'some'}))
         .pipe(gulp.dest(sources.jsDir))
@@ -173,6 +174,7 @@ gulp.task('jsIE', function () {
         }))
         .pipe($.concat('ie.js'))
         .pipe(crLf({changeCode: 'LF'}))
+        //.pipe(gulp.dest(sources.jsDir))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.uglify({preserveComments: 'some'}))
         .pipe(gulp.dest(sources.jsDir))
@@ -197,7 +199,6 @@ gulp.task("img", function () {
         }))
         .pipe($.cached('image'))
         .pipe($.imagemin({
-            interlaced: settings.img.gifInterlaced,
             use       : [
                 pngquant({
                     quality: settings.img.pngQuality,
@@ -210,6 +211,16 @@ gulp.task("img", function () {
                 svgo()
             ]
         }))
+        .pipe(gulp.dest(sources.imgDir))
+        .pipe(browserSync.reload({stream: true}));
+});
+
+gulp.task("imgGif", function () {
+    return gulp.src(sources.imgGif)
+        .pipe($.plumber({
+            errorHandler: $.notify.onError("Error: <%= error.message %>")
+        }))
+        .pipe($.cached('imgGif'))
         .pipe(gulp.dest(sources.imgDir))
         .pipe(browserSync.reload({stream: true}));
 });
@@ -282,6 +293,7 @@ gulp.task('watch', function () {
     gulp.watch(sources.css, ['css']);
     gulp.watch(sources.js, ['js']);
     gulp.watch(sources.img, ['img']);
+    gulp.watch(sources.imgGif, ['imgGif']);
     gulp.watch(sources.font, ['font']);
     gulp.watch(sources.html, ['browserSyncReload']);
     gulp.watch(sources.php, ['browserSyncReload']);
@@ -301,7 +313,7 @@ gulp.task('supply', function () {
  *********************/
 gulp.task('build', function () {
     runSequence('clear');
-    return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'font'], 'css', 'delete', 'supply', 'clear');
+    return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'imgGif', 'font'], 'css', 'delete', 'supply', 'clear');
 });
 
 /****************************
@@ -309,5 +321,5 @@ gulp.task('build', function () {
  ****************************/
 gulp.task('default', function () {
     runSequence('clear');
-    return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'font'], 'css', 'delete', 'browserSync', 'watch');
+    return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'imgGif', 'font'], 'css', 'delete', 'browserSync', 'watch');
 });
