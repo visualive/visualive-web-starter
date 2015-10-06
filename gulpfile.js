@@ -20,6 +20,7 @@ var gulp            = require('gulp'),
     browserSync     = require('browser-sync'),
     runSequence     = require('run-sequence'),
     fs              = require('fs'),
+    path            = require('path'),
     rootPath        = __dirname,
     sourcePath      = __dirname + '/_source',
     assetsPath      = __dirname + '/assets',
@@ -56,17 +57,24 @@ var gulp            = require('gulp'),
             //'bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.min.js',
             sourcePath + '/js/apps.js'
         ],
-        jsIE   : [
+        jsIE    : [
             'bower_components/html5shiv/dist/html5shiv.min.js',
             'bower_components/nwmatcher/src/nwmatcher.js',
             'bower_components/selectivizr/selectivizr.js',
             'bower_components/respond/dest/respond.min.js',
             'bower_components/REM-unit-polyfill/js/rem.min.js'
         ],
-        jsCopy : [
+        jsCopy  : [
             'bower_components/jquery-legacy/dist/jquery.min.js'
         ],
-        jsDir  : assetsPath + '/js/'
+        jsDir   : assetsPath + '/js/',
+        supplies: [
+            rootPath + '/**/*.html',
+            rootPath + '/**/*.php',
+            assetsPath + '/**',
+            '!' + rootPath + '/bower_components/**',
+            '!' + rootPath + '/node_modules/**'
+        ]
     };
 
 /*************************
@@ -136,10 +144,7 @@ gulp.task('css', function () {
     return gulp.src(sources.css)
         .pipe($.csscomb())
         .pipe(gulp.dest(sources.cssDir))
-        .pipe($.rename({
-            suffix : '.min',
-            extname: '.css'
-        }))
+        .pipe($.rename({suffix: '.min'}))
         .pipe($.cssmin())
         .pipe(gulp.dest(sources.cssDir))
         .pipe(browserSync.reload({stream: true}));
@@ -249,6 +254,7 @@ gulp.task('clear', function () {
 gulp.task('clean', $.shell.task(
     [
         'rm -rf ' + rootPath + '/*.html',
+        'rm -rf ' + rootPath + '/*.zip',
         'rm -rf ' + assetsPath + '/css/*',
         'rm -rf ' + assetsPath + '/js/*',
         'rm -rf ' + assetsPath + '/img/*',
@@ -282,11 +288,20 @@ gulp.task('watch', function () {
 });
 
 /*********************
+ ****** Supply  ******
+ *********************/
+gulp.task('supply', function () {
+    return gulp.src(sources.supplies, {base: "."})
+        .pipe($.zip('archive.zip'))
+        .pipe(gulp.dest(rootPath + '/'));
+});
+
+/*********************
  ******  Build  ******
  *********************/
 gulp.task('build', function () {
     runSequence('clear');
-    return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'font'], 'css', 'delete', 'clear');
+    return runSequence('clean', ['ect', 'scss', 'js', 'jsIE', 'jsCopy', 'img', 'font'], 'css', 'delete', 'supply', 'clear');
 });
 
 /****************************

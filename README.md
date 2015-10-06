@@ -1,4 +1,4 @@
-VisuAlive Web Starter v1.3.0
+VisuAlive Web Starter v1.4.0
 =============================
 
 VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。CSS フレームワークに ZURB 社の Foundation を採用しています。
@@ -52,12 +52,28 @@ HTML モックアップの初期ディレクトリ構造です。
 .
 ├── _source
 │   ├── ect
+│   │   ├── inc
+│   │   │   └── _slider.ect
+│   │   └── layout
+│   │   │   └── _default.ect
+│   │   └── index.ect
 │   ├── font
+│   │   ├── slick.eot
+│   │   ├── slick.svg
+│   │   ├── slick.ttf
+│   │   └── slick.woff
 │   ├── img
+│   │   ├── ajax-loader.gif
+│   │   ├── girl.jpg
+│   │   └── girl2.jpg
 │   ├── js
-│   ├── scss
-│   │   ├── _settings.scss
-│   │   └── style.scss
+│   │   └── apps.js
+│   └── scss
+│        ├── _normalize.scss
+│        ├── _settings.scss
+│        ├── _slick.scss
+│        ├── _slick-theme.scss
+│        └── style.scss
 ├── assets
 │   ├── css
 │   ├── font
@@ -75,23 +91,25 @@ HTML モックアップの初期ディレクトリ構造です。
 
 ## Gulp Tasks
 
-| タスク            | 説明                                                                                                |
-|:------------------|:----------------------------------------------------------------------------------------------------|
-| ect               | テンプレートエンジン ECT ファイルのビルド                                                           |
-| scss              | Scss ファイルのビルドと CSS ファイルの圧縮                                                          |
-| js                | 複数の JS ファイルを結合圧縮                                                                        |
-| jsIE              | 複数の JS ファイルを結合圧縮                                                                        |
-| jsCopy            | JS ファイルを `bower_components/` ディレクトリから `assets/js/` へコピーする                        |
-| img               | 画像ファイルの圧縮                                                                                  |
-| font              | フォントファイルを `_source/font/` ディレクトリから `assets/font/` へコピーする                     |
-| browserSync       | Browser-sync                                                                                        |
-| browserSyncReload | Browser-sync                                                                                        |
-| clear             | キャッシュファイルの削除                                                                            |
-| clean             | `*.html` ファイルの削除、`assets/css/`、`assets/js/`、`assets/img/`、`assets/font/` を空にする      |
-| delete            | `*.sass-cache/`、`*.gitkeep` の削除を行う                                                           |
-| build             | clean、scss、ect、jsLib、jsIE、js、imgBuild、imgThumbBuild、font、jsCopy、clear、deleteの順で行う   |
-| watch             | Scss、JS、フォント、画像、HTML、PHP の監視                                                          |
-| default           | clean、scss、ect、jsLib、jsIE、js、imgBuild、imgThumbBuild、font、jsCopy、browserSync、watch を行う |
+| タスク            | 説明                                                                                           |
+|:------------------|:-----------------------------------------------------------------------------------------------|
+| ect               | テンプレートエンジン ECT ファイルのビルド                                                      |
+| scss              | Scss ファイルのビルド                                                                          |
+| css               | CSS ファイルの圧縮                                                                             |
+| js                | 複数の JS ファイルを結合圧縮                                                                   |
+| jsIE              | 複数の JS ファイルを結合圧縮                                                                   |
+| jsCopy            | JS ファイルを `bower_components/` ディレクトリから `assets/js/` へコピーする                   |
+| img               | 画像ファイルの圧縮                                                                             |
+| font              | フォントファイルを `_source/font/` ディレクトリから `assets/font/` へコピーする                |
+| browserSync       | Browser-sync                                                                                   |
+| browserSyncReload | Browser-sync                                                                                   |
+| clear             | キャッシュファイルの削除                                                                       |
+| clean             | `*.html` ファイルの削除、`assets/css/`、`assets/js/`、`assets/img/`、`assets/font/` を空にする |
+| delete            | `*.sass-cache/`、`*.gitkeep` の削除を行う                                                      |
+| supply            | zip ファイルを作成                                                                             |
+| build             | clean、scss、ect、js、jsIE、jsCopy、img、font、jsCopy、css、supply、clear、deleteの順で行う    |
+| watch             | Scss、JS、フォント、画像、HTML、PHP の監視                                                     |
+| default           | clean、scss、ect、js、jsIE、jsCopy、img、font、jsCopy、css、browserSync、watch を行う          |
 
 ## Things to be aware of when using
 
@@ -101,12 +119,10 @@ HTML モックアップの初期ディレクトリ構造です。
 
 Dual licensed under the MIT License or GNU General Public License v2.0 ( or later ).
 
-## ToDo
-
-* もっと効率よく高速に処理できるように Gulpfile の改修を行う。( Pull Request 歓迎 ! ! ）
-
 ## Changelog
 
+* 2015/10/06  
+v1.3.4 - Zip 圧縮タスクの追加。
 * 2015/10/06  
 v1.3.0 - Gulpfile、ディレクトリ構造の変更。
 * 2015/07/20  
