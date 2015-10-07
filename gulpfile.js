@@ -143,7 +143,7 @@ gulp.task('scss', function () {
 gulp.task('css', function () {
     return gulp.src(sources.css)
         .pipe($.csscomb())
-        //.pipe(gulp.dest(sources.cssDir))
+        .pipe(gulp.dest(sources.cssDir))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.cssmin())
         .pipe(gulp.dest(sources.cssDir))
@@ -160,7 +160,6 @@ gulp.task('js', function () {
         }))
         .pipe($.concat('apps.js'))
         .pipe(crLf({changeCode: 'LF'}))
-        //.pipe(gulp.dest(sources.jsDir))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.uglify({preserveComments: 'some'}))
         .pipe(gulp.dest(sources.jsDir))
@@ -174,7 +173,6 @@ gulp.task('jsIE', function () {
         }))
         .pipe($.concat('ie.js'))
         .pipe(crLf({changeCode: 'LF'}))
-        //.pipe(gulp.dest(sources.jsDir))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.uglify({preserveComments: 'some'}))
         .pipe(gulp.dest(sources.jsDir))
@@ -264,8 +262,9 @@ gulp.task('clear', function () {
  ********************/
 gulp.task('clean', $.shell.task(
     [
-        'rm -rf ' + rootPath + '/*.html',
-        'rm -rf ' + rootPath + '/*.zip',
+        'rm -rf ' + rootPath   + '/*.html',
+        'rm -rf ' + rootPath   + '/*.zip',
+        'rm -rf ' + rootPath   + '/archive/',
         'rm -rf ' + assetsPath + '/css/*',
         'rm -rf ' + assetsPath + '/js/*',
         'rm -rf ' + assetsPath + '/img/*',
