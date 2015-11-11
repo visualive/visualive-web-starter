@@ -51,7 +51,7 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 
 ## Directory structure
 
-HTML モックアップの初期ディレクトリ構造です。\_public\_html ディレクトリ以下に全てのファイルが出力されます。
+HTML モックアップの初期ディレクトリ構造です。Gulp タスクで出力されいるファイルは \_public\_html ディレクトリ以下に出力されます。納品時やウェブ公開時に必要なファイルは \_public\_html ディレクトリ以下です。
 
 ```
 .
@@ -125,7 +125,7 @@ Dual licensed under the MIT License or GNU General Public License v2.0 ( or late
 ## Changelog
 
 * 2015/11/11  
-v2.1.0 - \_public\_html をに全てのファイルを出力するように変更。
+v2.1.0 - \_public\_html に全てのファイルを出力するように変更。
 * 2015/11/11  
 v2.0.0 - Gulpfile を全面的にリニューアル。
 * 2015/10/07  
