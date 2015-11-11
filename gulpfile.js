@@ -255,8 +255,11 @@ gulp.task('clear', function () {
  *********************/
 gulp.task('clean', $.shell.task(
     [
+        'rm -rf ' + rootPath   + '/*.ect',
         'rm -rf ' + rootPath   + '/*.html',
         'rm -rf ' + rootPath   + '/*.zip',
+        'rm -rf ' + rootPath   + '/**/*/.gitkeep',
+        'rm -rf ' + rootPath   + '/.sass-cache/',
         'rm -rf ' + rootPath   + '/archives/',
         'rm -rf ' + assetsPath + '/css/*',
         'rm -rf ' + assetsPath + '/js/*',
@@ -267,25 +270,9 @@ gulp.task('clean', $.shell.task(
 ));
 
 
-/**********************
- ******  Delete  ******
- **********************/
-gulp.task('delete', $.shell.task(
-    [
-        'rm -rf ' + rootPath + '/*.ect',
-        'rm -rf ' + rootPath + '/**/*/.gitkeep',
-        'rm -rf ' + rootPath + '/.sass-cache/',
-        'rm -rf ' + sourcePath + '/.tmp/'
-    ]
-));
-
-
 /*********************
  ******  Watch  ******
  *********************/
-gulp.task('setWatch', function() {
-    global.isWatching = true;
-});
 gulp.task('watch', function () {
     // gulp.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], ['ect']);
     // gulp.watch(sources.scss.files, ['scss']);
