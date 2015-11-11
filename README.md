@@ -117,7 +117,7 @@ HTML モックアップの初期ディレクトリ構造です。
 
 ## Things to be aware of when using
 
-`*.html`、`assets/css/`、`assets/js/`、`assets/img/`、`assets/src/font/` は、Gulp 起動時並びに build タスク実行時に、一旦空になる事に注意。
+`*.html`、`assets/css/`、`assets/js/`、`assets/img/`、`assets/font/` は、default タスク／ supply タスク実行時に、一旦空になる事に注意。
 
 ## License
 
