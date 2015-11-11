@@ -11,6 +11,9 @@
 
 var gulp              = require('gulp'),
     $                 = require('gulp-load-plugins')(),
+    pngquant          = require('imagemin-pngquant'),
+    jpegoptim         = require('imagemin-jpegoptim'),
+    svgo              = require('imagemin-svgo'),
     browserSync       = require('browser-sync'),
     browserSyncReload = browserSync.reload,
     runSequence       = require('run-sequence'),
@@ -20,17 +23,17 @@ var gulp              = require('gulp'),
     sourcePath        = __dirname + '/_source',
     assetsPath        = __dirname + '/assets',
     sources           = {
-        ect  : {
+        ect     : {
             conf : rootPath + '/.ect.json',
             files: [sourcePath + '/ect/**/*.ect', '!' + sourcePath + '/ect/**/_*.ect']
         },
-        scss : {
+        scss    : {
             tmp  : sourcePath + '/.tmp/scss',
             dir  : sourcePath + '/scss/',
             files: sourcePath + '/scss/**/*.scss',
             dest : assetsPath + '/css/'
         },
-        js   : {
+        js      : {
             tmp  : sourcePath + '/.tmp/js',
             dir  : sourcePath + '/js/',
             files: [
@@ -54,27 +57,35 @@ var gulp              = require('gulp'),
             ],
             dest : assetsPath + '/js/'
         },
-        img  : {
-            files: [sourcePath + '/img/**/*.{jpg,jpeg,gif,png}'],
+        img     : {
+            files: sourcePath + '/img/**/*',
             dest : assetsPath + '/img/'
         },
-        font : {
-            files: [sourcePath + '/font/**/*'],
+        font    : {
+            files: sourcePath + '/font/**/*',
             dest : assetsPath + '/font/'
         },
-        copy : {
+        copy    : {
             js : [
                 rootPath + '/bower_components/jquery-legacy/dist/jquery.min.js'
             ],
+        },
+        archives: {
+            files: [
+                rootPath + '/**/*.html',
+                rootPath + '/**/*.php',
+                assetsPath + '/**',
+                '!' + rootPath + '/bower_components/**',
+                '!' + rootPath + '/node_modules/**'
+            ],
+            dest : rootPath + '/'
         }
     };
 
-gulp.watching = false;
 
-
-/*************************
- ******  HTML compile  ***
- *************************/
+/****************************
+ ******  HTML compile  ******
+ ****************************/
 gulp.task('ect', function () {
     var json = JSON.parse(fs.readFileSync(sources.ect.conf));
 
@@ -102,9 +113,9 @@ gulp.task('ect', function () {
 });
 
 
-/**************************
- ******  Scss compile  ****
- **************************/
+/****************************
+ ******  Scss compile  ******
+ ****************************/
 gulp.task('scss', function () {
     return gulp.src(sources.scss.files)
         .pipe($.plumber({
@@ -140,9 +151,9 @@ gulp.task('scss', function () {
 });
 
 
-/************************
- ******  JS compile  ****
- ************************/
+/***************************
+ ******  JS optimize  ******
+ ***************************/
 gulp.task('js', function () {
     return gulp.src(sources.js.files)
         .pipe($.plumber({
@@ -161,7 +172,6 @@ gulp.task('js', function () {
 
 gulp.task('js:ie', function () {
     return gulp.src(sources.js.ie)
-        .pipe($.cached('js:ie'))
         .pipe($.plumber({
             errorHandler: $.notify.onError("Error: <%= error.message %>")
         }))
@@ -169,9 +179,7 @@ gulp.task('js:ie', function () {
         .pipe($.crLfReplace({changeCode: 'LF'}))
         .pipe($.rename({suffix: '.min'}))
         .pipe($.uglify({preserveComments: 'some'}))
-        .pipe($.remember('js:ie'))
-        .pipe(gulp.dest(sources.js.dest))
-        .pipe(browserSync.reload({stream: true, once: true}));
+        .pipe(gulp.dest(sources.js.dest));
 });
 
 gulp.task('js:copy', function () {
@@ -180,6 +188,41 @@ gulp.task('js:copy', function () {
             errorHandler: $.notify.onError("Error: <%= error.message %>")
         }))
         .pipe(gulp.dest(sources.js.dest));
+});
+
+
+/****************************
+ ******  Img optimize  ******
+ ****************************/
+gulp.task('img', function () {
+    return gulp.src(sources.img.files)
+        .pipe($.cache($.imagemin({
+            progressive: true,
+            interlaced : true,
+            use        : [
+                pngquant({
+                    quality: "60-70",
+                    speed  : 5
+                }),
+                jpegoptim({
+                    max        : 75,
+                    progressive: true
+                }),
+                svgo()
+            ]
+        })))
+        .pipe(gulp.dest(sources.img.dest))
+        .pipe($.size({title: 'img'}))
+        .pipe(browserSyncReload({stream: true}));
+});
+
+/************************
+ ******  Archives  ******
+ ************************/
+gulp.task('archives', function () {
+    return gulp.src(sources.archives.files, {base: "."})
+        .pipe($.zip('archives.zip'))
+        .pipe(gulp.dest(rootPath + '/'));
 });
 
 
@@ -203,18 +246,18 @@ gulp.task('browserSyncReload', function () {
  ******  Cache clear  ******
  ***************************/
 gulp.task('clear', function () {
-    return $.cached.caches = {};
+    return $.cache.clearAll();
 });
 
 
-/********************
- ******  Clean  *****
- ********************/
+/*********************
+ ******  Clean  ******
+ *********************/
 gulp.task('clean', $.shell.task(
     [
         'rm -rf ' + rootPath   + '/*.html',
         'rm -rf ' + rootPath   + '/*.zip',
-        'rm -rf ' + rootPath   + '/archive/',
+        'rm -rf ' + rootPath   + '/archives/',
         'rm -rf ' + assetsPath + '/css/*',
         'rm -rf ' + assetsPath + '/js/*',
         'rm -rf ' + assetsPath + '/img/*',
@@ -224,9 +267,9 @@ gulp.task('clean', $.shell.task(
 ));
 
 
-/*********************
- ******  Delete  *****
- *********************/
+/**********************
+ ******  Delete  ******
+ **********************/
 gulp.task('delete', $.shell.task(
     [
         'rm -rf ' + rootPath + '/*.ect',
@@ -244,10 +287,30 @@ gulp.task('setWatch', function() {
     global.isWatching = true;
 });
 gulp.task('watch', function () {
-    this.watching = true;
-    gulp.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], ['ect']);
-    gulp.watch(sources.scss.files, ['scss']);
-    gulp.watch(sources.js.files, ['js']);
+    // gulp.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], ['ect']);
+    // gulp.watch(sources.scss.files, ['scss']);
+    // gulp.watch(sources.js.files, ['js']);
+    // gulp.watch(sources.img.files, ['img']);
+    $.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], function () {
+        return gulp.start(['ect']);
+    });
+    $.watch(sources.scss.files, function () {
+        return gulp.start(['sass']);
+    });
+    $.watch(sources.js.files, function () {
+        return gulp.start(['js']);
+    });
+    $.watch(sources.img.files, function () {
+        return gulp.start(['img']);
+    });
+});
+
+
+/********************
+ *****  Supply  *****
+ ********************/
+gulp.task('supply', ['clear','clean'], function (cb) {
+    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'archives', cb);
 });
 
 
@@ -255,5 +318,5 @@ gulp.task('watch', function () {
  ******  Default task  ******
  ****************************/
 gulp.task('default', ['clear','clean'], function (cb) {
-    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy'], 'browserSync', 'watch', cb);
+    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'browserSync', 'watch', cb);
 });
