@@ -5,8 +5,9 @@
 *node_modules
 *bower_components
 *.zip
-*assets/js
-*assets/css
-*assets/img
-*assets/font
+*.html
+*_public_html/assets/js
+*_public_html/assets/css
+*_public_html/assets/img
+*_public_html/assets/font
 *archive
