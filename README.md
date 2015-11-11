@@ -1,4 +1,4 @@
-VisuAlive Web Starter v2.0.0
+VisuAlive Web Starter v2.1.0
 =============================
 
 VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。CSS フレームワークに ZURB 社の Foundation を採用しています。
@@ -51,11 +51,16 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 
 ## Directory structure
 
-HTML モックアップの初期ディレクトリ構造です。  
-※ _source/ ディレクトリは、クライアントへ納品する時やウェブ公開時には不要です。
+HTML モックアップの初期ディレクトリ構造です。\_public\_html ディレクトリ以下に全てのファイルが出力されます。
 
 ```
 .
+├── _public_html
+│   └── assets
+│        ├── css
+│        ├── font
+│        ├── img
+│        └── js
 ├── _source
 │   ├── ect
 │   │   ├── inc
@@ -80,17 +85,11 @@ HTML モックアップの初期ディレクトリ構造です。
 │        ├── _slick.scss
 │        ├── _slick-theme.scss
 │        └── style.scss
-├── assets
-│   ├── css
-│   ├── font
-│   ├── img
-│   └── js
 ├── .csscomb.json
 ├── .ect.json
 ├── .gitignore
 ├── bower.json
 ├── gulpfile.js
-├── index.html
 ├── package.json
 └── README.md
 ```
@@ -125,6 +124,8 @@ Dual licensed under the MIT License or GNU General Public License v2.0 ( or late
 
 ## Changelog
 
+* 2015/11/11  
+v2.1.0 - \_public\_html をに全てのファイルを出力するように変更。
 * 2015/11/11  
 v2.0.0 - Gulpfile を全面的にリニューアル。
 * 2015/10/07  

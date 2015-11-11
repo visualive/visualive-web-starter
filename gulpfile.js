@@ -20,12 +20,14 @@ var gulp              = require('gulp'),
     fs                = require('fs'),
     path              = require('path'),
     rootPath          = __dirname,
+    pablicPath        = __dirname + '/_public_html',
     sourcePath        = __dirname + '/_source',
-    assetsPath        = __dirname + '/assets',
+    assetsPath        = pablicPath + '/assets',
     sources           = {
         ect     : {
             conf : rootPath + '/.ect.json',
-            files: [sourcePath + '/ect/**/*.ect', '!' + sourcePath + '/ect/**/_*.ect']
+            files: [sourcePath + '/ect/**/*.ect', '!' + sourcePath + '/ect/**/_*.ect'],
+            dest : pablicPath + '/'
         },
         scss    : {
             tmp  : sourcePath + '/.tmp/scss',
@@ -70,14 +72,8 @@ var gulp              = require('gulp'),
                 rootPath + '/bower_components/jquery-legacy/dist/jquery.min.js'
             ],
         },
-        archives: {
-            files: [
-                rootPath + '/**/*.html',
-                rootPath + '/**/*.php',
-                assetsPath + '/**',
-                '!' + rootPath + '/bower_components/**',
-                '!' + rootPath + '/node_modules/**'
-            ],
+        archive : {
+            files: pablicPath + '/**',
             dest : rootPath + '/'
         }
     };
@@ -107,7 +103,7 @@ gulp.task('ect', function () {
         .pipe($.prettify({
             indent_size: 4
         }))
-        .pipe(gulp.dest(rootPath))
+        .pipe(gulp.dest(sources.ect.dest))
         .pipe($.size({title: 'HTML', showFiles: true}))
         .pipe(browserSyncReload({stream: true}));
 });
@@ -219,9 +215,9 @@ gulp.task('img', function () {
 /************************
  ******  Archives  ******
  ************************/
-gulp.task('archives', function () {
-    return gulp.src(sources.archives.files, {base: "."})
-        .pipe($.zip('archives.zip'))
+gulp.task('archive', function () {
+    return gulp.src(sources.archive.files, {base: "."})
+        .pipe($.zip('archive.zip'))
         .pipe(gulp.dest(rootPath + '/'));
 });
 
@@ -232,7 +228,7 @@ gulp.task('archives', function () {
 gulp.task('browserSync', function () {
     return browserSync.init(null, {
         server: {
-            baseDir: rootPath + '/'
+            baseDir: pablicPath + '/'
         },
         notify: false
     });
@@ -255,12 +251,11 @@ gulp.task('clear', function () {
  *********************/
 gulp.task('clean', $.shell.task(
     [
-        'rm -rf ' + rootPath   + '/*.ect',
-        'rm -rf ' + rootPath   + '/*.html',
         'rm -rf ' + rootPath   + '/*.zip',
-        'rm -rf ' + rootPath   + '/**/*/.gitkeep',
-        'rm -rf ' + rootPath   + '/.sass-cache/',
         'rm -rf ' + rootPath   + '/archives/',
+        'rm -rf ' + pablicPath + '/*.ect',
+        'rm -rf ' + pablicPath + '/*.html',
+        'rm -rf ' + assetsPath + '/**/*/.gitkeep',
         'rm -rf ' + assetsPath + '/css/*',
         'rm -rf ' + assetsPath + '/js/*',
         'rm -rf ' + assetsPath + '/img/*',
@@ -297,7 +292,7 @@ gulp.task('watch', function () {
  *****  Supply  *****
  ********************/
 gulp.task('supply', ['clear','clean'], function (cb) {
-    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'archives', cb);
+    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'archive', cb);
 });
 
 
