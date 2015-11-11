@@ -9,7 +9,7 @@ VisuAlive Web Starter は CSS プリプロセッサの Sass、タスクランナ
 
 > 参考サイト : [Mac OSX での開発環境構築](http://designinglabo.com/1019/mac-os-x-web-development-environment.html)
 
-## Editing Source files
+## Editing source files
 
 以下のコマンド実行後、ファイルの編集が可能になります。
 
@@ -40,7 +40,7 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 | JPG Quality     | JPEG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視       | 70     |
 | JPG Progressive | プログレッシブ JPEG にするかの設定                                          | true   |
 
-## npm run commands
+## Npm run commands
 
 | コマンド          | 説明                                                                                                                                 |
 |:------------------|--------------------------------------------------------------------------------------------------------------------------------------|
@@ -49,7 +49,7 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 | npm run archives  | `./node_modules/gulp/bin/gulp.js archives` のショートカット。Zip ファイルを作成。納品の時に使うと便利。                              |
 | npm run supply    | `./node_modules/gulp/bin/gulp.js supply` のショートカット。scss や js などの各タスク実行後 Zip ファイルを作成。納品の時に使うと便利。|
 
-## Directory Structure
+## Directory structure
 
 HTML モックアップの初期ディレクトリ構造です。  
 ※ _source/ ディレクトリは、クライアントへ納品する時やウェブ公開時には不要です。
@@ -95,7 +95,7 @@ HTML モックアップの初期ディレクトリ構造です。
 └── README.md
 ```
 
-## Gulp Tasks
+## Gulp tasks
 
 | タスク            | 説明                                                                                                |
 |:------------------|:----------------------------------------------------------------------------------------------------|
