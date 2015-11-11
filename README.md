@@ -1,15 +1,15 @@
-VisuAlive Web Starter v2.00
+VisuAlive Web Starter v2.0.0
 =============================
 
 VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。CSS フレームワークに ZURB 社の Foundation を採用しています。
 
-## Use of programming language and build tool
+## Use of programming language and compile tool
 
 VisuAlive Web Starter は CSS プリプロセッサの Sass、タスクランナーに Gulp を採用しています。予め Ruby、Sass、Compass、Node.js、ImageMagic、Gulp、Bower をインストールしておいてください。  
 
 > 参考サイト : [Mac OSX での開発環境構築](http://designinglabo.com/1019/mac-os-x-web-development-environment.html)
 
-## Editing SourceFiles
+## Editing Source files
 
 以下のコマンド実行後、ファイルの編集が可能になります。
 
@@ -19,6 +19,7 @@ $ npm run bower install
 $ npm install
 $ npm run gulp
 ```
+
 ## Settings
 ECT ファイルのセッティングは .ect.json、画像サムネイルの自動生成並びに画像の圧縮レベルの設定は gulpfile.js の img タスクで設定します。
 
@@ -32,12 +33,21 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 
 ### img タスク（gulpfile.js）
 
-| 項目           | 説明                                                                         | 初期値 |
-|:---------------|:-----------------------------------------------------------------------------|:-------|
+| 項目            | 説明                                                                        | 初期値 |
+|:----------------|:----------------------------------------------------------------------------|:-------|
 | PNG Quality     | PNG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視        | 60-80  |
 | PNG Speed       | PNG 画像の圧縮処理の実行速度を 1 〜 10 の間で設定。値が高くなるほど速度重視 | 5      |
 | JPG Quality     | JPEG 画像の圧縮レベルを 0 〜 100 の間で設定。値が高くなるほど品質重視       | 70     |
 | JPG Progressive | プログレッシブ JPEG にするかの設定                                          | true   |
+
+## npm run commands
+
+| コマンド          | 説明                                                                                                                                 |
+|:------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| npm run bower     | `./node_modules/bower/bin/bower` のショートカット。例えば `npm run bower install` でパッケージをインストール可能。                   |
+| npm run gulp      | `./node_modules/gulp/bin/gulp.js` のショートカット。例えば `npm run gulp scss` で scss タスクを実行可能。                            |
+| npm run archives  | `./node_modules/gulp/bin/gulp.js archives` のショートカット。Zip ファイルを作成。納品の時に使うと便利。                              |
+| npm run supply    | `./node_modules/gulp/bin/gulp.js supply` のショートカット。scss や js などの各タスク実行後 Zip ファイルを作成。納品の時に使うと便利。|
 
 ## Directory Structure
 
