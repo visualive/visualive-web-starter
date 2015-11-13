@@ -14,7 +14,7 @@ VisuAlive Web Starter は CSS プリプロセッサの Sass、タスクランナ
 以下のコマンド実行後、ファイルの編集が可能になります。
 
 ```sh
-$ cd /Users/YOURNAME/va-web-starter/
+$ cd /Users/YOURNAME/visualive-web-starter/
 $ npm run bower install
 $ npm install
 $ npm run gulp

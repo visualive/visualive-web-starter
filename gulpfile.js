@@ -79,9 +79,9 @@ var gulp              = require('gulp'),
     };
 
 
-/****************************
- ******  HTML compile  ******
- ****************************/
+/**************************
+ *****  HTML compile  *****
+ **************************/
 gulp.task('ect', function () {
     var json = JSON.parse(fs.readFileSync(sources.ect.conf));
 
@@ -109,9 +109,9 @@ gulp.task('ect', function () {
 });
 
 
-/****************************
- ******  Scss compile  ******
- ****************************/
+/**************************
+ *****  Scss compile  *****
+ **************************/
 gulp.task('scss', function () {
     return gulp.src(sources.scss.files)
         .pipe($.plumber({
@@ -147,9 +147,9 @@ gulp.task('scss', function () {
 });
 
 
-/***************************
- ******  JS optimize  ******
- ***************************/
+/*************************
+ *****  JS optimize  *****
+ *************************/
 gulp.task('js', function () {
     return gulp.src(sources.js.files)
         .pipe($.plumber({
@@ -187,9 +187,9 @@ gulp.task('js:copy', function () {
 });
 
 
-/****************************
- ******  Img optimize  ******
- ****************************/
+/**************************
+ *****  Img optimize  *****
+ **************************/
 gulp.task('img', function () {
     return gulp.src(sources.img.files)
         .pipe($.cache($.imagemin({
@@ -212,9 +212,10 @@ gulp.task('img', function () {
         .pipe(browserSyncReload({stream: true}));
 });
 
-/************************
- ******  Archives  ******
- ************************/
+
+/**********************
+ *****  Archives  *****
+ **********************/
 gulp.task('archive', function () {
     return gulp.src(sources.archive.files, {base: "."})
         .pipe($.zip('archive.zip'))
@@ -222,9 +223,9 @@ gulp.task('archive', function () {
 });
 
 
-/****************************
- ******  Browser sync  ******
- ****************************/
+/**************************
+ *****  Browser sync  *****
+ **************************/
 gulp.task('browserSync', function () {
     return browserSync.init(null, {
         server: {
@@ -238,17 +239,17 @@ gulp.task('browserSyncReload', function () {
 });
 
 
-/***************************
- ******  Cache clear  ******
- ***************************/
+/*************************
+ *****  Cache clear  *****
+ *************************/
 gulp.task('clear', function () {
     return $.cache.clearAll();
 });
 
 
-/*********************
- ******  Clean  ******
- *********************/
+/*******************
+ *****  Clean  *****
+ *******************/
 gulp.task('clean', $.shell.task(
     [
         'rm -rf ' + rootPath   + '/*.zip',
@@ -265,14 +266,10 @@ gulp.task('clean', $.shell.task(
 ));
 
 
-/*********************
- ******  Watch  ******
- *********************/
+/*******************
+ *****  Watch  *****
+ *******************/
 gulp.task('watch', function () {
-    // gulp.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], ['ect']);
-    // gulp.watch(sources.scss.files, ['scss']);
-    // gulp.watch(sources.js.files, ['js']);
-    // gulp.watch(sources.img.files, ['img']);
     $.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], function () {
         return gulp.start(['ect']);
     });
@@ -296,9 +293,9 @@ gulp.task('supply', ['clear','clean'], function (cb) {
 });
 
 
-/****************************
- ******  Default task  ******
- ****************************/
+/**************************
+ *****  Default task  *****
+ **************************/
 gulp.task('default', ['clear','clean'], function (cb) {
     return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'browserSync', 'watch', cb);
 });
