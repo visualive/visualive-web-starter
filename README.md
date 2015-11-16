@@ -15,8 +15,8 @@ VisuAlive Web Starter は CSS プリプロセッサの Sass、タスクランナ
 
 ```sh
 $ cd /Users/YOURNAME/visualive-web-starter/
-$ npm run bower install
 $ npm install
+$ npm run bower install
 $ npm run gulp
 ```
 
@@ -45,9 +45,9 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 | コマンド          | 説明                                                                                                                                 |
 |:------------------|--------------------------------------------------------------------------------------------------------------------------------------|
 | npm run bower     | `./node_modules/bower/bin/bower` のショートカット。例えば `npm run bower install` でパッケージをインストール可能。                   |
-| npm run gulp      | `./node_modules/gulp/bin/gulp.js` のショートカット。例えば `npm run gulp scss` で scss タスクを実行可能。                            |
-| npm run archives  | `./node_modules/gulp/bin/gulp.js archives` のショートカット。Zip ファイルを作成。納品の時に使うと便利。                              |
-| npm run supply    | `./node_modules/gulp/bin/gulp.js supply` のショートカット。scss や js などの各タスク実行後 Zip ファイルを作成。納品の時に使うと便利。|
+| npm run gulp      | `./node_modules/gulp/bin/gulp` のショートカット。例えば `npm run gulp scss` で scss タスクを実行可能。                            |
+| npm run archives  | `./node_modules/gulp/bin/gulp archives` のショートカット。Zip ファイルを作成。納品の時に使うと便利。                              |
+| npm run supply    | `./node_modules/gulp/bin/gulp supply` のショートカット。scss や js などの各タスク実行後 Zip ファイルを作成。納品の時に使うと便利。|
 
 ## Directory structure
 
