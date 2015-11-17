@@ -42,12 +42,12 @@ ECT ファイルのセッティングは .ect.json、画像サムネイルの自
 
 ## Npm run commands
 
-| コマンド          | 説明                                                                                                                                 |
-|:------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| npm run bower     | `./node_modules/.bin/bower` のショートカット。例えば `npm run bower install` でパッケージをインストール可能。                        |
-| npm run gulp      | `./node_modules/.bin/gulp` のショートカット。例えば `npm run gulp scss` で scss タスクを実行可能。                                   |
-| npm run archives  | `./node_modules/.bin/gulp archives` のショートカット。Zip ファイルを作成。納品の時に使うと便利。                                     |
-| npm run supply    | `./node_modules/.bin/gulp supply` のショートカット。scss や js などの各タスク実行後 Zip ファイルを作成。納品の時に使うと便利。       |
+| コマンド        | 説明                                                                                                                         |
+|:----------------|------------------------------------------------------------------------------------------------------------------------------|
+| npm run bower   | `./node_modules/.bin/bower` のショートカット。例えば `npm run bower install` でパッケージをインストール可能                  |
+| npm run gulp    | `./node_modules/.bin/gulp` のショートカット。例えば `npm run gulp scss` で scss タスクを実行可能                             |
+| npm run archive | `./node_modules/.bin/gulp archive` のショートカット。Zip ファイルを作成。納品の時に使うと便利                                |
+| npm run supply  | `./node_modules/.bin/gulp supply` のショートカット。scss や js などの各タスク実行後 Zip ファイルを作成。納品の時に使うと便利 |
 
 ## Directory structure
 
