@@ -274,7 +274,7 @@ gulp.task('watch', function () {
         return gulp.start(['ect']);
     });
     $.watch(sources.scss.files, function () {
-        return gulp.start(['sass']);
+        return gulp.start(['scss']);
     });
     $.watch(sources.js.files, function () {
         return gulp.start(['js']);
