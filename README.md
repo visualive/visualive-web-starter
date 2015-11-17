@@ -1,4 +1,4 @@
-VisuAlive Web Starter v2.0.0
+VisuAlive Web Starter v2.0.1
 =============================
 
 VisuAlive Web Starter は、HTML コーディングをなるべく早く始められるようするためのスターターキットです。CSS フレームワークに ZURB 社の Foundation を採用しています。
@@ -124,6 +124,8 @@ Dual licensed under the MIT License or GNU General Public License v2.0 ( or late
 
 ## Changelog
 
+* 2015/11/11  
+v2.0.1 - バグ修正。
 * 2015/11/11  
 v2.0.0 - Gulpfile を全面的にリニューアル。
 * 2015/10/07  
