@@ -12,9 +12,25 @@
 <![endif]-->
 </head>
 <body>
+<div class="off-canvas-wrap" data-offcanvas>
+    <div class="inner-wrap">
 
 <% content %>
 
+
+        <div class="left-off-canvas-menu">
+            <ul>
+              <li><a href="#">Item 1</a></li>
+              <li><a href="#">Item 2</a></li>
+              <li><a href="#">Item 3</a></li>
+              <li><a href="#">Item 4</a></li>
+              <li><a href="#">Item 5</a></li>
+            </ul>
+        </div>
+
+        <a class="exit-off-canvas"></a>
+    </div>
+</div>
 <script src="<%= @siteURL %>assets/js/jquery.min.js"></script>
 <script src="<%= @siteURL %>assets/js/apps.min.js"></script>
 </body>
