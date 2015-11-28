@@ -8,14 +8,14 @@
  * @license   Dual licensed under the MIT License or GNU General Public License v2.0 ( or later ).
  */
 jQuery(function($){
-	'use strict';
+	"use strict";
 
 	// Slider
-	$('.swipeSlide').slick({
+	$(".swipeSlide").slick({
 		autoplay: true,
 		autoplaySpeed: 5000,
 		// fade: true,
-		accessibility: false,
-		// arrows: false,
+		accessibility: false
+		// arrows: false
 	});
 });

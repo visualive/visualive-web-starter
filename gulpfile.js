@@ -9,72 +9,77 @@
  */
 "use strict";
 
-var gulp              = require('gulp'),
-    $                 = require('gulp-load-plugins')(),
-    pngquant          = require('imagemin-pngquant'),
-    jpegoptim         = require('imagemin-jpegoptim'),
-    svgo              = require('imagemin-svgo'),
-    browserSync       = require('browser-sync'),
+var gulp              = require("gulp"),
+    $                 = require("gulp-load-plugins")(),
+    pngquant          = require("imagemin-pngquant"),
+    jpegoptim         = require("imagemin-jpegoptim"),
+    svgo              = require("imagemin-svgo"),
+    browserSync       = require("browser-sync"),
     browserSyncReload = browserSync.reload,
-    runSequence       = require('run-sequence'),
-    fs                = require('fs'),
-    path              = require('path'),
-    rootPath          = __dirname,
-    pablicPath        = __dirname + '/_public_html',
-    sourcePath        = __dirname + '/_source',
-    assetsPath        = pablicPath + '/assets',
+    runSequence       = require("run-sequence"),
+    fs                = require("fs"),
+    path              = require("path"),
+    // rootPath          = __dirname,
+    rootPath          = "./",
+    pablicPath        = "_public_html",
+    sourcePath        = "_source",
+    assetsPath        = "_public_html/assets",
     sources           = {
         ect     : {
-            conf : rootPath + '/.ect.json',
-            files: [sourcePath + '/ect/**/*.ect', '!' + sourcePath + '/ect/**/_*.ect'],
-            dest : pablicPath + '/'
+            conf : rootPath + "/.ect.json",
+            files: [sourcePath + "/ect/**/*.ect", "!" + sourcePath + "/ect/**/_*.ect"],
+            dest : pablicPath + "/"
         },
         scss    : {
-            tmp  : sourcePath + '/.tmp/scss',
-            dir  : sourcePath + '/scss/',
-            files: sourcePath + '/scss/**/*.scss',
-            dest : assetsPath + '/css/'
+            tmp  : sourcePath + "/.tmp/scss",
+            dir  : sourcePath + "/scss/",
+            files: sourcePath + "/scss/**/*.scss",
+            dest : assetsPath + "/css/"
         },
         js      : {
-            tmp  : sourcePath + '/.tmp/js',
-            dir  : sourcePath + '/js/',
+            tmp  : sourcePath + "/.tmp/js",
+            dir  : sourcePath + "/js/",
             files: [
-                // rootPath + '/bower_components/jquery-legacy/dist/jquery.min.js',
-                rootPath + '/bower_components/fastclick/lib/fastclick.js',
-                rootPath + '/bower_components/modernizr/modernizr.js',
-                //'bower_components/foundation/js/foundation/foundation.js',
-                //'bower_components/jQuery.mmenu/dist/js/jquery.mmenu.min.js',
-                //'bower_components/shufflejs/dist/jquery.shuffle.min.js',
-                rootPath + '/bower_components/slick-carousel/slick/slick.min.js',
-                //'bower_components/jquery.stellar/jquery.stellar.min.js',
-                //'bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.min.js',
-                sourcePath + '/js/**/*.js'
+                // rootPath + "/bower_components/jquery-legacy/dist/jquery.min.js",
+                rootPath + "/bower_components/fastclick/lib/fastclick.js",
+                rootPath + "/bower_components/modernizr/modernizr.js",
+                //"bower_components/foundation/js/foundation/foundation.js",
+                //"bower_components/jQuery.mmenu/dist/js/jquery.mmenu.min.js",
+                //"bower_components/shufflejs/dist/jquery.shuffle.min.js",
+                rootPath + "/bower_components/slick-carousel/slick/slick.min.js",
+                //"bower_components/jquery.stellar/jquery.stellar.min.js",
+                //"bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.min.js",
+                sourcePath + "/js/**/*.js"
             ],
             ie   : [
-                rootPath + '/bower_components/html5shiv/dist/html5shiv.min.js',
-                rootPath + '/bower_components/nwmatcher/src/nwmatcher.js',
-                rootPath + '/bower_components/selectivizr/selectivizr.js',
-                rootPath + '/bower_components/respond/dest/respond.min.js',
-                rootPath + '/bower_components/REM-unit-polyfill/js/rem.min.js'
+                rootPath + "/bower_components/html5shiv/dist/html5shiv.min.js",
+                rootPath + "/bower_components/nwmatcher/src/nwmatcher.js",
+                rootPath + "/bower_components/selectivizr/selectivizr.js",
+                rootPath + "/bower_components/respond/dest/respond.min.js",
+                rootPath + "/bower_components/REM-unit-polyfill/js/rem.min.js"
             ],
-            dest : assetsPath + '/js/'
+            hint : [
+                sourcePath + "/js/**/*.js",
+                "!" + sourcePath + "/js/**/*.min.js"
+            ],
+            dest : assetsPath + "/js/"
         },
         img     : {
-            files: sourcePath + '/img/**/*',
-            dest : assetsPath + '/img/'
+            files: sourcePath + "/img/**/*",
+            dest : assetsPath + "/img/"
         },
         font    : {
-            files: sourcePath + '/font/**/*',
-            dest : assetsPath + '/font/'
+            files: sourcePath + "/font/**/*",
+            dest : assetsPath + "/font/"
         },
         copy    : {
             js : [
-                rootPath + '/bower_components/jquery-legacy/dist/jquery.min.js'
+                rootPath + "/bower_components/jquery-legacy/dist/jquery.min.js"
             ],
         },
         archive : {
-            files: pablicPath + '/**',
-            dest : rootPath + '/'
+            files: pablicPath + "/**",
+            dest : rootPath + "/"
         }
     };
 
@@ -82,7 +87,7 @@ var gulp              = require('gulp'),
 /**************************
  *****  HTML compile  *****
  **************************/
-gulp.task('ect', function () {
+gulp.task("ect", function () {
     var json = JSON.parse(fs.readFileSync(sources.ect.conf));
 
     return gulp.src(sources.ect.files)
@@ -95,16 +100,16 @@ gulp.task('ect', function () {
             }
         }))
         .pipe($.compressor({
-            'preserve-line-breaks'  : true,
-            'remove-intertag-spaces': true,
-            'preserve-server-script': true,
-            'preserve-php'          : true
+            "preserve-line-breaks"  : true,
+            "remove-intertag-spaces": true,
+            "preserve-server-script": true,
+            "preserve-php"          : true
         }))
         .pipe($.prettify({
             indent_size: 4
         }))
         .pipe(gulp.dest(sources.ect.dest))
-        .pipe($.size({title: 'HTML', showFiles: true}))
+        .pipe($.size({title: "HTML", showFiles: true}))
         .pipe(browserSyncReload({stream: true}));
 });
 
@@ -112,35 +117,33 @@ gulp.task('ect', function () {
 /**************************
  *****  Scss compile  *****
  **************************/
-gulp.task('scss', function () {
+gulp.task("scss", function () {
     return gulp.src(sources.scss.files)
         .pipe($.plumber({
             errorHandler: $.notify.onError("Error: <%= error.message %>")
         }))
         .pipe($.newer(sources.scss.tmp))
         .pipe($.sass({
-            style          : 'compressed',
-            bundleExec     : true,
-            require        : ['bourbon', 'neat'],
+            outputStyle    : "expanded",
             precision      : 10,
-            includePaths   : __dirname + '/bower_components/foundation/scss/',
+            includePaths   : ["bower_components/foundation/scss/"],
             errLogToConsole: true
         }))
         .pipe($.pixrem({
-            rootValue: '100%',
+            rootValue: "100%",
             replace: true
         }))
         .pipe($.autoprefixer({
-            browsers: ['last 2 versions', 'ie 8', 'ie 9'],
+            browsers: ["last 2 versions", "ie 8", "ie 9"],
             cascade: false
         }))
         .pipe($.csscomb())
         .pipe(gulp.dest(sources.scss.tmp))
         .pipe(gulp.dest(sources.scss.dest))
-        .pipe($.size({title: 'Style'}))
-        .pipe($.rename({suffix: '.min'}))
+        .pipe($.size({title: "Style"}))
+        .pipe($.rename({suffix: ".min"}))
         .pipe($.cssmin())
-        .pipe($.size({title: 'Style:min'}))
+        .pipe($.size({title: "Style:min"}))
         .pipe(gulp.dest(sources.scss.tmp))
         .pipe(gulp.dest(sources.scss.dest))
         .pipe(browserSyncReload({stream: true}));
@@ -150,35 +153,36 @@ gulp.task('scss', function () {
 /*************************
  *****  JS optimize  *****
  *************************/
-gulp.task('js', function () {
+gulp.task("js", ["js:hint"], function () {
     return gulp.src(sources.js.files)
         .pipe($.plumber({
             errorHandler: $.notify.onError("Error: <%= error.message %>")
         }))
         .pipe($.newer(sources.js.tmp))
-        .pipe($.concat('apps.js'))
-        .pipe($.crLfReplace({changeCode: 'LF'}))
+        .pipe($.concat("apps.js"))
+        .pipe($.crLfReplace({changeCode: "LF"}))
         .pipe(gulp.dest(sources.js.tmp))
-        .pipe($.rename({suffix: '.min'}))
-        .pipe($.uglify({preserveComments: 'some'}))
-        .pipe($.size({title: 'js'}))
+        .pipe(gulp.dest(sources.js.dest))
+        .pipe($.rename({suffix: ".min"}))
+        .pipe($.uglify({preserveComments: "some"}))
+        .pipe($.size({title: "js"}))
         .pipe(gulp.dest(sources.js.dest))
         .pipe(browserSync.reload({stream: true, once: true}));
 });
 
-gulp.task('js:ie', function () {
+gulp.task("js:ie", function () {
     return gulp.src(sources.js.ie)
         .pipe($.plumber({
             errorHandler: $.notify.onError("Error: <%= error.message %>")
         }))
-        .pipe($.concat('ie.js'))
-        .pipe($.crLfReplace({changeCode: 'LF'}))
-        .pipe($.rename({suffix: '.min'}))
-        .pipe($.uglify({preserveComments: 'some'}))
+        .pipe($.concat("ie.js"))
+        .pipe($.crLfReplace({changeCode: "LF"}))
+        .pipe($.rename({suffix: ".min"}))
+        .pipe($.uglify({preserveComments: "some"}))
         .pipe(gulp.dest(sources.js.dest));
 });
 
-gulp.task('js:copy', function () {
+gulp.task("js:copy", function () {
     return gulp.src(sources.copy.js)
         .pipe($.plumber({
             errorHandler: $.notify.onError("Error: <%= error.message %>")
@@ -186,11 +190,20 @@ gulp.task('js:copy', function () {
         .pipe(gulp.dest(sources.js.dest));
 });
 
+gulp.task("js:hint", function () {
+    return gulp.src(sources.js.hint)
+        .pipe($.plumber({
+            errorHandler: $.notify.onError("Error: <%= error.message %>")
+        }))
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish'));
+});
+
 
 /**************************
  *****  Img optimize  *****
  **************************/
-gulp.task('img', function () {
+gulp.task("img", function () {
     return gulp.src(sources.img.files)
         .pipe($.cache($.imagemin({
             progressive: true,
@@ -208,7 +221,7 @@ gulp.task('img', function () {
             ]
         })))
         .pipe(gulp.dest(sources.img.dest))
-        .pipe($.size({title: 'img'}))
+        .pipe($.size({title: "img"}))
         .pipe(browserSyncReload({stream: true}));
 });
 
@@ -216,25 +229,25 @@ gulp.task('img', function () {
 /**********************
  *****  Archives  *****
  **********************/
-gulp.task('archive', function () {
+gulp.task("archive", function () {
     return gulp.src(sources.archive.files, {base: "."})
-        .pipe($.zip('archive.zip'))
-        .pipe(gulp.dest(rootPath + '/'));
+        .pipe($.zip("archive.zip"))
+        .pipe(gulp.dest(rootPath + "/"));
 });
 
 
 /**************************
  *****  Browser sync  *****
  **************************/
-gulp.task('browserSync', function () {
+gulp.task("browserSync", function () {
     return browserSync.init(null, {
         server: {
-            baseDir: pablicPath + '/'
+            baseDir: pablicPath + "/"
         },
         notify: false
     });
 });
-gulp.task('browserSyncReload', function () {
+gulp.task("browserSyncReload", function () {
     return browserSyncReload();
 });
 
@@ -242,7 +255,7 @@ gulp.task('browserSyncReload', function () {
 /*************************
  *****  Cache clear  *****
  *************************/
-gulp.task('clear', function () {
+gulp.task("clear", function () {
     return $.cache.clearAll();
 });
 
@@ -250,18 +263,18 @@ gulp.task('clear', function () {
 /*******************
  *****  Clean  *****
  *******************/
-gulp.task('clean', $.shell.task(
+gulp.task("clean", $.shell.task(
     [
-        'rm -rf ' + rootPath   + '/*.zip',
-        'rm -rf ' + rootPath   + '/archives/',
-        'rm -rf ' + pablicPath + '/*.ect',
-        'rm -rf ' + pablicPath + '/*.html',
-        'rm -rf ' + assetsPath + '/**/*/.gitkeep',
-        'rm -rf ' + assetsPath + '/css/*',
-        'rm -rf ' + assetsPath + '/js/*',
-        'rm -rf ' + assetsPath + '/img/*',
-        'rm -rf ' + assetsPath + '/font/*',
-        'rm -rf ' + sourcePath + '/.tmp/'
+        "rm -rf " + rootPath   + "*.zip",
+        "rm -rf " + rootPath   + "archives/",
+        "rm -rf " + pablicPath + "/*.ect",
+        "rm -rf " + pablicPath + "/*.html",
+        "rm -rf " + assetsPath + "/**/*/.gitkeep",
+        "rm -rf " + assetsPath + "/css/*",
+        "rm -rf " + assetsPath + "/js/*",
+        "rm -rf " + assetsPath + "/img/*",
+        "rm -rf " + assetsPath + "/font/*",
+        "rm -rf " + sourcePath + "/.tmp/"
     ]
 ));
 
@@ -269,18 +282,18 @@ gulp.task('clean', $.shell.task(
 /*******************
  *****  Watch  *****
  *******************/
-gulp.task('watch', function () {
-    $.watch([sourcePath + '/ect/**/*.ect', sources.ect.conf], function () {
-        return gulp.start(['ect']);
+gulp.task("watch", function () {
+    $.watch([sourcePath + "/ect/**/*.ect", sources.ect.conf], function () {
+        return gulp.start(["ect"]);
     });
     $.watch(sources.scss.files, function () {
-        return gulp.start(['scss']);
+        return gulp.start(["scss"]);
     });
     $.watch(sources.js.files, function () {
-        return gulp.start(['js']);
+        return gulp.start(["js"]);
     });
     $.watch(sources.img.files, function () {
-        return gulp.start(['img']);
+        return gulp.start(["img"]);
     });
 });
 
@@ -288,14 +301,14 @@ gulp.task('watch', function () {
 /********************
  *****  Supply  *****
  ********************/
-gulp.task('supply', ['clear','clean'], function (cb) {
-    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'archive', cb);
+gulp.task("supply", ["clear","clean"], function (cb) {
+    return runSequence(["ect", "scss", "js", "js:ie", "js:copy", "img"], "archive", cb);
 });
 
 
 /**************************
  *****  Default task  *****
  **************************/
-gulp.task('default', ['clear','clean'], function (cb) {
-    return runSequence(['ect', 'scss', 'js', 'js:ie', 'js:copy', 'img'], 'browserSync', 'watch', cb);
+gulp.task("default", ["clear","clean"], function (cb) {
+    return runSequence(["ect", "scss", "js", "js:ie", "js:copy", "img"], "browserSync", "watch", cb);
 });
