@@ -19,8 +19,7 @@ var gulp              = require("gulp"),
     runSequence       = require("run-sequence"),
     fs                = require("fs"),
     path              = require("path"),
-    // rootPath          = __dirname,
-    rootPath          = "./",
+    rootPath          = __dirname,
     pablicPath        = "_public_html",
     sourcePath        = "_source",
     assetsPath        = "_public_html/assets",
@@ -265,16 +264,16 @@ gulp.task("clear", function () {
  *******************/
 gulp.task("clean", $.shell.task(
     [
-        "rm -rf " + rootPath   + "*.zip",
-        "rm -rf " + rootPath   + "archives/",
-        "rm -rf " + pablicPath + "/*.ect",
-        "rm -rf " + pablicPath + "/*.html",
-        "rm -rf " + assetsPath + "/**/*/.gitkeep",
-        "rm -rf " + assetsPath + "/css/*",
-        "rm -rf " + assetsPath + "/js/*",
-        "rm -rf " + assetsPath + "/img/*",
-        "rm -rf " + assetsPath + "/font/*",
-        "rm -rf " + sourcePath + "/.tmp/"
+        "rm -rf " + rootPath + "/*.zip",
+        "rm -rf " + rootPath + "/archives/",
+        "rm -rf " + rootPath + "/" + pablicPath + "/*.ect",
+        "rm -rf " + rootPath + "/" + pablicPath + "/*.html",
+        "rm -rf " + rootPath + "/" + assetsPath + "/**/*/.gitkeep",
+        "rm -rf " + rootPath + "/" + assetsPath + "/css/*",
+        "rm -rf " + rootPath + "/" + assetsPath + "/js/*",
+        "rm -rf " + rootPath + "/" + assetsPath + "/img/*",
+        "rm -rf " + rootPath + "/" + assetsPath + "/font/*",
+        "rm -rf " + rootPath + "/" + sourcePath + "/.tmp/"
     ]
 ));
 
